@@ -1,0 +1,548 @@
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc3qe2Lk.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"delay.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.delayms,"ax",%progbits
+  18              		.align	1
+  19              		.global	delayms
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	delayms:
+  27              	.LVL0:
+  28              	.LFB131:
+  29              		.file 1 "Libraries/delay.c"
+   1:Libraries/delay.c **** 
+   2:Libraries/delay.c **** /* Header includes -----------------------------------------------------------*/
+   3:Libraries/delay.c **** #include "delay.h"
+   4:Libraries/delay.c **** 
+   5:Libraries/delay.c **** /* Macro definitions ---------------------------------------------------------*/
+   6:Libraries/delay.c **** /* Type definitions ----------------------------------------------------------*/
+   7:Libraries/delay.c **** /* Variable declarations -----------------------------------------------------*/
+   8:Libraries/delay.c **** /* Variable definitions ------------------------------------------------------*/
+   9:Libraries/delay.c **** /* Function declarations -----------------------------------------------------*/
+  10:Libraries/delay.c **** /* Function definitions ------------------------------------------------------*/
+  11:Libraries/delay.c **** 
+  12:Libraries/delay.c **** /**
+  13:Libraries/delay.c ****   * @brief  Microsecond delay.
+  14:Libraries/delay.c ****   * @param  [in] nus: The number of microseconds delay.
+  15:Libraries/delay.c ****   * @return None.
+  16:Libraries/delay.c ****   */
+  17:Libraries/delay.c **** void delayus(uint64_t nus)
+  18:Libraries/delay.c **** {
+  19:Libraries/delay.c ****   uint64_t nms = 0;
+  20:Libraries/delay.c ****   
+  21:Libraries/delay.c ****   if(nus == 0)
+  22:Libraries/delay.c ****   {
+  23:Libraries/delay.c ****     return;
+  24:Libraries/delay.c ****   }
+  25:Libraries/delay.c ****   
+  26:Libraries/delay.c ****   nms = nus / 1000;
+  27:Libraries/delay.c ****   nus = nus % 1000;
+  28:Libraries/delay.c ****   
+  29:Libraries/delay.c ****   if(nms > 0)
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc3qe2Lk.s 			page 2
+
+
+  30:Libraries/delay.c ****   {
+  31:Libraries/delay.c ****     delayms(nms);
+  32:Libraries/delay.c ****   }
+  33:Libraries/delay.c ****   
+  34:Libraries/delay.c ****   if(nus > 0)
+  35:Libraries/delay.c ****   {
+  36:Libraries/delay.c **** 
+  37:Libraries/delay.c ****     SysTick->CTRL &= ~(0x010007);                  /* Configures the SysTick clock source. */
+  38:Libraries/delay.c ****     SysTick->LOAD = SystemCoreClock / 8000000 * nus; /* Time load (SysTick-> LOAD is 24bit). */
+  39:Libraries/delay.c ****     
+  40:Libraries/delay.c ****     SysTick->VAL = 0;                                               /* Empty counter. */
+  41:Libraries/delay.c ****     SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;                       /* Start the countdown. */
+  42:Libraries/delay.c ****     
+  43:Libraries/delay.c ****     while((SysTick->CTRL&(1UL<<16)) != (1UL<<16));                  /* Wait time is reached. */
+  44:Libraries/delay.c ****     
+  45:Libraries/delay.c ****     SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;                      /* Close counter. */
+  46:Libraries/delay.c ****   }
+  47:Libraries/delay.c **** }
+  48:Libraries/delay.c **** 
+  49:Libraries/delay.c **** /**
+  50:Libraries/delay.c ****   * @brief  Millisecond delay.
+  51:Libraries/delay.c ****   * @param  [in] nms: The number of millisecond delay.
+  52:Libraries/delay.c ****   * @return None.
+  53:Libraries/delay.c ****   */
+  54:Libraries/delay.c **** void delayms(uint64_t nms)
+  55:Libraries/delay.c **** {
+  30              		.loc 1 55 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  56:Libraries/delay.c ****   if(nms == 0)
+  35              		.loc 1 56 3 view .LVU1
+  36              		.loc 1 56 5 is_stmt 0 view .LVU2
+  37 0000 50EA0103 		orrs	r3, r0, r1
+  38 0004 01D0     		beq	.L10
+  55:Libraries/delay.c ****   if(nms == 0)
+  39              		.loc 1 55 1 view .LVU3
+  40 0006 10B4     		push	{r4}
+  41              	.LCFI0:
+  42              		.cfi_def_cfa_offset 4
+  43              		.cfi_offset 4, -4
+  44 0008 29E0     		b	.L3
+  45              	.L10:
+  46              	.LCFI1:
+  47              		.cfi_def_cfa_offset 0
+  48              		.cfi_restore 4
+  49 000a 7047     		bx	lr
+  50              	.LVL1:
+  51              	.L5:
+  52              	.LCFI2:
+  53              		.cfi_def_cfa_offset 4
+  54              		.cfi_offset 4, -4
+  57:Libraries/delay.c ****   {
+  58:Libraries/delay.c ****     return;
+  59:Libraries/delay.c ****   }
+  60:Libraries/delay.c ****   
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc3qe2Lk.s 			page 3
+
+
+  61:Libraries/delay.c ****   while(nms > 500)
+  62:Libraries/delay.c ****   {
+  63:Libraries/delay.c **** 
+  64:Libraries/delay.c ****     SysTick->CTRL &= ~(0x010007);                /* Configures the SysTick clock source. */
+  55              		.loc 1 64 5 is_stmt 1 view .LVU4
+  56              		.loc 1 64 19 is_stmt 0 view .LVU5
+  57 000c 4FF0E022 		mov	r2, #-536813568
+  58 0010 1369     		ldr	r3, [r2, #16]
+  59 0012 23F48033 		bic	r3, r3, #65536
+  60 0016 23F00703 		bic	r3, r3, #7
+  61 001a 1361     		str	r3, [r2, #16]
+  65:Libraries/delay.c ****     SysTick->LOAD = SystemCoreClock / 8000 * 500;  /* Time load (SysTick-> LOAD is 24bit). */
+  62              		.loc 1 65 5 is_stmt 1 view .LVU6
+  63              		.loc 1 65 37 is_stmt 0 view .LVU7
+  64 001c 264B     		ldr	r3, .L11
+  65 001e 1B68     		ldr	r3, [r3]
+  66 0020 264C     		ldr	r4, .L11+4
+  67 0022 A4FB0343 		umull	r4, r3, r4, r3
+  68 0026 5B0A     		lsrs	r3, r3, #9
+  69              		.loc 1 65 44 view .LVU8
+  70 0028 4FF4FA7C 		mov	ip, #500
+  71 002c 0CFB03F3 		mul	r3, ip, r3
+  72              		.loc 1 65 19 view .LVU9
+  73 0030 5361     		str	r3, [r2, #20]
+  66:Libraries/delay.c ****     
+  67:Libraries/delay.c ****     
+  68:Libraries/delay.c ****     SysTick->VAL = 0;                                             /* Empty counter. */
+  74              		.loc 1 68 5 is_stmt 1 view .LVU10
+  75              		.loc 1 68 18 is_stmt 0 view .LVU11
+  76 0032 0023     		movs	r3, #0
+  77 0034 9361     		str	r3, [r2, #24]
+  69:Libraries/delay.c ****     SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;                     /* Start the countdown. */
+  78              		.loc 1 69 5 is_stmt 1 view .LVU12
+  79              		.loc 1 69 19 is_stmt 0 view .LVU13
+  80 0036 1369     		ldr	r3, [r2, #16]
+  81 0038 43F00103 		orr	r3, r3, #1
+  82 003c 1361     		str	r3, [r2, #16]
+  70:Libraries/delay.c ****     
+  71:Libraries/delay.c ****     while((SysTick->CTRL&(1UL<<16)) != (1UL<<16));                /* Wait time is reached. */
+  83              		.loc 1 71 5 is_stmt 1 view .LVU14
+  84              	.L4:
+  85              		.loc 1 71 50 discriminator 1 view .LVU15
+  86              		.loc 1 71 10 discriminator 1 view .LVU16
+  87              		.loc 1 71 19 is_stmt 0 discriminator 1 view .LVU17
+  88 003e 4FF0E023 		mov	r3, #-536813568
+  89 0042 1B69     		ldr	r3, [r3, #16]
+  90              		.loc 1 71 10 discriminator 1 view .LVU18
+  91 0044 13F4803F 		tst	r3, #65536
+  92 0048 F9D0     		beq	.L4
+  72:Libraries/delay.c ****     
+  73:Libraries/delay.c ****     SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;                    /* Close counter. */
+  93              		.loc 1 73 5 is_stmt 1 view .LVU19
+  94              		.loc 1 73 19 is_stmt 0 view .LVU20
+  95 004a 4FF0E022 		mov	r2, #-536813568
+  96 004e 1369     		ldr	r3, [r2, #16]
+  97 0050 23F00103 		bic	r3, r3, #1
+  98 0054 1361     		str	r3, [r2, #16]
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc3qe2Lk.s 			page 4
+
+
+  74:Libraries/delay.c ****     
+  75:Libraries/delay.c ****     nms -= 500;
+  99              		.loc 1 75 5 is_stmt 1 view .LVU21
+ 100              		.loc 1 75 9 is_stmt 0 view .LVU22
+ 101 0056 B0F5FA70 		subs	r0, r0, #500
+ 102              	.LVL2:
+ 103              		.loc 1 75 9 view .LVU23
+ 104 005a 41F1FF31 		adc	r1, r1, #-1
+ 105              	.LVL3:
+ 106              	.L3:
+  61:Libraries/delay.c ****   {
+ 107              		.loc 1 61 8 is_stmt 1 view .LVU24
+ 108 005e 40F2F513 		movw	r3, #501
+ 109 0062 9842     		cmp	r0, r3
+ 110 0064 71F10003 		sbcs	r3, r1, #0
+ 111 0068 D0D2     		bcs	.L5
+  76:Libraries/delay.c ****   }
+  77:Libraries/delay.c ****   
+  78:Libraries/delay.c **** 
+  79:Libraries/delay.c ****   SysTick->CTRL &= ~(0x010007);                 /* Configures the SysTick clock source. */
+ 112              		.loc 1 79 3 view .LVU25
+ 113              		.loc 1 79 17 is_stmt 0 view .LVU26
+ 114 006a 4FF0E022 		mov	r2, #-536813568
+ 115 006e 1369     		ldr	r3, [r2, #16]
+ 116 0070 23F48033 		bic	r3, r3, #65536
+ 117 0074 23F00703 		bic	r3, r3, #7
+ 118 0078 1361     		str	r3, [r2, #16]
+  80:Libraries/delay.c ****   SysTick->LOAD = SystemCoreClock / 8000 * nms;    /* Time load (SysTick-> LOAD is 24bit). */
+ 119              		.loc 1 80 3 is_stmt 1 view .LVU27
+ 120              		.loc 1 80 17 is_stmt 0 view .LVU28
+ 121 007a 0F4B     		ldr	r3, .L11
+ 122 007c 1B68     		ldr	r3, [r3]
+ 123              		.loc 1 80 35 view .LVU29
+ 124 007e 0F49     		ldr	r1, .L11+4
+ 125              	.LVL4:
+ 126              		.loc 1 80 35 view .LVU30
+ 127 0080 A1FB0313 		umull	r1, r3, r1, r3
+ 128 0084 5B0A     		lsrs	r3, r3, #9
+ 129              		.loc 1 80 17 view .LVU31
+ 130 0086 03FB00F0 		mul	r0, r3, r0
+ 131              		.loc 1 80 17 view .LVU32
+ 132 008a 5061     		str	r0, [r2, #20]
+  81:Libraries/delay.c ****   
+  82:Libraries/delay.c ****   
+  83:Libraries/delay.c ****   SysTick->VAL = 0;                                               /* Empty counter. */
+ 133              		.loc 1 83 3 is_stmt 1 view .LVU33
+ 134              		.loc 1 83 16 is_stmt 0 view .LVU34
+ 135 008c 0023     		movs	r3, #0
+ 136 008e 9361     		str	r3, [r2, #24]
+  84:Libraries/delay.c ****   SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;                       /* Start the countdown. */
+ 137              		.loc 1 84 3 is_stmt 1 view .LVU35
+ 138              		.loc 1 84 17 is_stmt 0 view .LVU36
+ 139 0090 1369     		ldr	r3, [r2, #16]
+ 140 0092 43F00103 		orr	r3, r3, #1
+ 141 0096 1361     		str	r3, [r2, #16]
+  85:Libraries/delay.c ****   
+  86:Libraries/delay.c ****   while((SysTick->CTRL&(1UL<<16)) != (1UL<<16));                  /* Wait time is reached. */
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc3qe2Lk.s 			page 5
+
+
+ 142              		.loc 1 86 3 is_stmt 1 view .LVU37
+ 143              	.L6:
+ 144              		.loc 1 86 48 discriminator 1 view .LVU38
+ 145              		.loc 1 86 8 discriminator 1 view .LVU39
+ 146              		.loc 1 86 17 is_stmt 0 discriminator 1 view .LVU40
+ 147 0098 4FF0E023 		mov	r3, #-536813568
+ 148 009c 1B69     		ldr	r3, [r3, #16]
+ 149              		.loc 1 86 8 discriminator 1 view .LVU41
+ 150 009e 13F4803F 		tst	r3, #65536
+ 151 00a2 F9D0     		beq	.L6
+  87:Libraries/delay.c ****   
+  88:Libraries/delay.c ****   SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;                      /* Close counter. */
+ 152              		.loc 1 88 3 is_stmt 1 view .LVU42
+ 153              		.loc 1 88 17 is_stmt 0 view .LVU43
+ 154 00a4 4FF0E022 		mov	r2, #-536813568
+ 155 00a8 1369     		ldr	r3, [r2, #16]
+ 156 00aa 23F00103 		bic	r3, r3, #1
+ 157 00ae 1361     		str	r3, [r2, #16]
+  89:Libraries/delay.c **** }
+ 158              		.loc 1 89 1 view .LVU44
+ 159 00b0 5DF8044B 		ldr	r4, [sp], #4
+ 160              	.LCFI3:
+ 161              		.cfi_restore 4
+ 162              		.cfi_def_cfa_offset 0
+ 163 00b4 7047     		bx	lr
+ 164              	.L12:
+ 165 00b6 00BF     		.align	2
+ 166              	.L11:
+ 167 00b8 00000000 		.word	SystemCoreClock
+ 168 00bc D34D6210 		.word	274877907
+ 169              		.cfi_endproc
+ 170              	.LFE131:
+ 172              		.global	__aeabi_uldivmod
+ 173              		.section	.text.delayus,"ax",%progbits
+ 174              		.align	1
+ 175              		.global	delayus
+ 176              		.syntax unified
+ 177              		.thumb
+ 178              		.thumb_func
+ 179              		.fpu fpv4-sp-d16
+ 181              	delayus:
+ 182              	.LVL5:
+ 183              	.LFB130:
+  18:Libraries/delay.c ****   uint64_t nms = 0;
+ 184              		.loc 1 18 1 is_stmt 1 view -0
+ 185              		.cfi_startproc
+ 186              		@ args = 0, pretend = 0, frame = 0
+ 187              		@ frame_needed = 0, uses_anonymous_args = 0
+  18:Libraries/delay.c ****   uint64_t nms = 0;
+ 188              		.loc 1 18 1 is_stmt 0 view .LVU46
+ 189 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 190              	.LCFI4:
+ 191              		.cfi_def_cfa_offset 32
+ 192              		.cfi_offset 3, -32
+ 193              		.cfi_offset 4, -28
+ 194              		.cfi_offset 5, -24
+ 195              		.cfi_offset 6, -20
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc3qe2Lk.s 			page 6
+
+
+ 196              		.cfi_offset 7, -16
+ 197              		.cfi_offset 8, -12
+ 198              		.cfi_offset 9, -8
+ 199              		.cfi_offset 14, -4
+  19:Libraries/delay.c ****   
+ 200              		.loc 1 19 3 is_stmt 1 view .LVU47
+ 201              	.LVL6:
+  21:Libraries/delay.c ****   {
+ 202              		.loc 1 21 3 view .LVU48
+  21:Libraries/delay.c ****   {
+ 203              		.loc 1 21 5 is_stmt 0 view .LVU49
+ 204 0004 50EA0103 		orrs	r3, r0, r1
+ 205 0008 3CD0     		beq	.L13
+ 206 000a 8046     		mov	r8, r0
+ 207 000c 0C46     		mov	r4, r1
+  26:Libraries/delay.c ****   nus = nus % 1000;
+ 208              		.loc 1 26 3 is_stmt 1 view .LVU50
+  26:Libraries/delay.c ****   nus = nus % 1000;
+ 209              		.loc 1 26 7 is_stmt 0 view .LVU51
+ 210 000e 4FF47A72 		mov	r2, #1000
+ 211 0012 0023     		movs	r3, #0
+ 212 0014 FFF7FEFF 		bl	__aeabi_uldivmod
+ 213              	.LVL7:
+  26:Libraries/delay.c ****   nus = nus % 1000;
+ 214              		.loc 1 26 7 view .LVU52
+ 215 0018 0746     		mov	r7, r0
+ 216 001a 0E46     		mov	r6, r1
+ 217              	.LVL8:
+  27:Libraries/delay.c ****   
+ 218              		.loc 1 27 3 is_stmt 1 view .LVU53
+  27:Libraries/delay.c ****   
+ 219              		.loc 1 27 7 is_stmt 0 view .LVU54
+ 220 001c 4FF47A72 		mov	r2, #1000
+ 221 0020 0023     		movs	r3, #0
+ 222 0022 4046     		mov	r0, r8
+ 223              	.LVL9:
+  27:Libraries/delay.c ****   
+ 224              		.loc 1 27 7 view .LVU55
+ 225 0024 2146     		mov	r1, r4
+ 226              	.LVL10:
+  27:Libraries/delay.c ****   
+ 227              		.loc 1 27 7 view .LVU56
+ 228 0026 FFF7FEFF 		bl	__aeabi_uldivmod
+ 229              	.LVL11:
+ 230 002a 9146     		mov	r9, r2
+ 231 002c 1D46     		mov	r5, r3
+ 232              	.LVL12:
+  29:Libraries/delay.c ****   {
+ 233              		.loc 1 29 3 is_stmt 1 view .LVU57
+  29:Libraries/delay.c ****   {
+ 234              		.loc 1 29 5 is_stmt 0 view .LVU58
+ 235 002e B8F57A7F 		cmp	r8, #1000
+ 236 0032 74F10003 		sbcs	r3, r4, #0
+ 237              	.LVL13:
+  29:Libraries/delay.c ****   {
+ 238              		.loc 1 29 5 view .LVU59
+ 239 0036 27D2     		bcs	.L18
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc3qe2Lk.s 			page 7
+
+
+ 240              	.LVL14:
+ 241              	.L15:
+  34:Libraries/delay.c ****   {
+ 242              		.loc 1 34 3 is_stmt 1 view .LVU60
+  34:Libraries/delay.c ****   {
+ 243              		.loc 1 34 5 is_stmt 0 view .LVU61
+ 244 0038 55EA0903 		orrs	r3, r5, r9
+ 245 003c 22D0     		beq	.L13
+  37:Libraries/delay.c ****     SysTick->LOAD = SystemCoreClock / 8000000 * nus; /* Time load (SysTick-> LOAD is 24bit). */
+ 246              		.loc 1 37 5 is_stmt 1 view .LVU62
+  37:Libraries/delay.c ****     SysTick->LOAD = SystemCoreClock / 8000000 * nus; /* Time load (SysTick-> LOAD is 24bit). */
+ 247              		.loc 1 37 19 is_stmt 0 view .LVU63
+ 248 003e 4FF0E023 		mov	r3, #-536813568
+ 249 0042 1A69     		ldr	r2, [r3, #16]
+ 250 0044 22F48032 		bic	r2, r2, #65536
+ 251 0048 22F00702 		bic	r2, r2, #7
+ 252 004c 1A61     		str	r2, [r3, #16]
+  38:Libraries/delay.c ****     
+ 253              		.loc 1 38 5 is_stmt 1 view .LVU64
+  38:Libraries/delay.c ****     
+ 254              		.loc 1 38 19 is_stmt 0 view .LVU65
+ 255 004e 114A     		ldr	r2, .L19
+ 256 0050 1268     		ldr	r2, [r2]
+  38:Libraries/delay.c ****     
+ 257              		.loc 1 38 37 view .LVU66
+ 258 0052 1149     		ldr	r1, .L19+4
+ 259 0054 A1FB0212 		umull	r1, r2, r1, r2
+ 260 0058 520D     		lsrs	r2, r2, #21
+  38:Libraries/delay.c ****     
+ 261              		.loc 1 38 19 view .LVU67
+ 262 005a 02FB09F2 		mul	r2, r2, r9
+ 263 005e 5A61     		str	r2, [r3, #20]
+  40:Libraries/delay.c ****     SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;                       /* Start the countdown. */
+ 264              		.loc 1 40 5 is_stmt 1 view .LVU68
+  40:Libraries/delay.c ****     SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;                       /* Start the countdown. */
+ 265              		.loc 1 40 18 is_stmt 0 view .LVU69
+ 266 0060 0022     		movs	r2, #0
+ 267 0062 9A61     		str	r2, [r3, #24]
+  41:Libraries/delay.c ****     
+ 268              		.loc 1 41 5 is_stmt 1 view .LVU70
+  41:Libraries/delay.c ****     
+ 269              		.loc 1 41 19 is_stmt 0 view .LVU71
+ 270 0064 1A69     		ldr	r2, [r3, #16]
+ 271 0066 42F00102 		orr	r2, r2, #1
+ 272 006a 1A61     		str	r2, [r3, #16]
+  43:Libraries/delay.c ****     
+ 273              		.loc 1 43 5 is_stmt 1 view .LVU72
+ 274              	.L16:
+  43:Libraries/delay.c ****     
+ 275              		.loc 1 43 50 discriminator 1 view .LVU73
+  43:Libraries/delay.c ****     
+ 276              		.loc 1 43 10 discriminator 1 view .LVU74
+  43:Libraries/delay.c ****     
+ 277              		.loc 1 43 19 is_stmt 0 discriminator 1 view .LVU75
+ 278 006c 4FF0E023 		mov	r3, #-536813568
+ 279 0070 1B69     		ldr	r3, [r3, #16]
+  43:Libraries/delay.c ****     
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc3qe2Lk.s 			page 8
+
+
+ 280              		.loc 1 43 10 discriminator 1 view .LVU76
+ 281 0072 13F4803F 		tst	r3, #65536
+ 282 0076 F9D0     		beq	.L16
+  45:Libraries/delay.c ****   }
+ 283              		.loc 1 45 5 is_stmt 1 view .LVU77
+  45:Libraries/delay.c ****   }
+ 284              		.loc 1 45 19 is_stmt 0 view .LVU78
+ 285 0078 4FF0E022 		mov	r2, #-536813568
+ 286 007c 1369     		ldr	r3, [r2, #16]
+ 287 007e 23F00103 		bic	r3, r3, #1
+ 288 0082 1361     		str	r3, [r2, #16]
+ 289              	.LVL15:
+ 290              	.L13:
+  47:Libraries/delay.c **** 
+ 291              		.loc 1 47 1 view .LVU79
+ 292 0084 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 293              	.LVL16:
+ 294              	.L18:
+  31:Libraries/delay.c ****   }
+ 295              		.loc 1 31 5 is_stmt 1 view .LVU80
+ 296 0088 3846     		mov	r0, r7
+ 297 008a 3146     		mov	r1, r6
+ 298 008c FFF7FEFF 		bl	delayms
+ 299              	.LVL17:
+  31:Libraries/delay.c ****   }
+ 300              		.loc 1 31 5 is_stmt 0 view .LVU81
+ 301 0090 D2E7     		b	.L15
+ 302              	.L20:
+ 303 0092 00BF     		.align	2
+ 304              	.L19:
+ 305 0094 00000000 		.word	SystemCoreClock
+ 306 0098 83DE1B43 		.word	1125899907
+ 307              		.cfi_endproc
+ 308              	.LFE130:
+ 310              		.section	.text.delays,"ax",%progbits
+ 311              		.align	1
+ 312              		.global	delays
+ 313              		.syntax unified
+ 314              		.thumb
+ 315              		.thumb_func
+ 316              		.fpu fpv4-sp-d16
+ 318              	delays:
+ 319              	.LVL18:
+ 320              	.LFB132:
+  90:Libraries/delay.c **** 
+  91:Libraries/delay.c **** /**
+  92:Libraries/delay.c ****   * @brief  Second delay.
+  93:Libraries/delay.c ****   * @param  [in] ns: The number of second delay.
+  94:Libraries/delay.c ****   * @return None.
+  95:Libraries/delay.c ****   */
+  96:Libraries/delay.c **** void delays(uint64_t ns)
+  97:Libraries/delay.c **** {
+ 321              		.loc 1 97 1 is_stmt 1 view -0
+ 322              		.cfi_startproc
+ 323              		@ args = 0, pretend = 0, frame = 0
+ 324              		@ frame_needed = 0, uses_anonymous_args = 0
+ 325              		.loc 1 97 1 is_stmt 0 view .LVU83
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc3qe2Lk.s 			page 9
+
+
+ 326 0000 38B5     		push	{r3, r4, r5, lr}
+ 327              	.LCFI5:
+ 328              		.cfi_def_cfa_offset 16
+ 329              		.cfi_offset 3, -16
+ 330              		.cfi_offset 4, -12
+ 331              		.cfi_offset 5, -8
+ 332              		.cfi_offset 14, -4
+ 333 0002 0446     		mov	r4, r0
+ 334 0004 0D46     		mov	r5, r1
+  98:Libraries/delay.c ****   while(ns > 0)
+ 335              		.loc 1 98 3 is_stmt 1 view .LVU84
+ 336              		.loc 1 98 8 is_stmt 0 view .LVU85
+ 337 0006 07E0     		b	.L22
+ 338              	.LVL19:
+ 339              	.L23:
+  99:Libraries/delay.c ****   {
+ 100:Libraries/delay.c ****     delayms(1000);
+ 340              		.loc 1 100 5 is_stmt 1 view .LVU86
+ 341 0008 4FF47A70 		mov	r0, #1000
+ 342 000c 0021     		movs	r1, #0
+ 343 000e FFF7FEFF 		bl	delayms
+ 344              	.LVL20:
+ 101:Libraries/delay.c ****     ns--;
+ 345              		.loc 1 101 5 view .LVU87
+ 346              		.loc 1 101 7 is_stmt 0 view .LVU88
+ 347 0012 013C     		subs	r4, r4, #1
+ 348              	.LVL21:
+ 349              		.loc 1 101 7 view .LVU89
+ 350 0014 45F1FF35 		adc	r5, r5, #-1
+ 351              	.LVL22:
+ 352              	.L22:
+  98:Libraries/delay.c ****   while(ns > 0)
+ 353              		.loc 1 98 8 is_stmt 1 view .LVU90
+ 354 0018 54EA0503 		orrs	r3, r4, r5
+ 355 001c F4D1     		bne	.L23
+ 102:Libraries/delay.c ****   }
+ 103:Libraries/delay.c **** }
+ 356              		.loc 1 103 1 is_stmt 0 view .LVU91
+ 357 001e 38BD     		pop	{r3, r4, r5, pc}
+ 358              		.loc 1 103 1 view .LVU92
+ 359              		.cfi_endproc
+ 360              	.LFE132:
+ 362              		.text
+ 363              	.Letext0:
+ 364              		.file 2 "c:\\program files (x86)\\gnu arm embedded toolchain\\10 2020-q4-major\\arm-none-eabi\\inc
+ 365              		.file 3 "c:\\program files (x86)\\gnu arm embedded toolchain\\10 2020-q4-major\\arm-none-eabi\\inc
+ 366              		.file 4 "Libraries/CMSIS/Core/Include/core_cm4.h"
+ 367              		.file 5 "Libraries/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc3qe2Lk.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 delay.c
+C:\Users\Admin\AppData\Local\Temp\cc3qe2Lk.s:18     .text.delayms:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\cc3qe2Lk.s:26     .text.delayms:00000000 delayms
+C:\Users\Admin\AppData\Local\Temp\cc3qe2Lk.s:167    .text.delayms:000000b8 $d
+C:\Users\Admin\AppData\Local\Temp\cc3qe2Lk.s:174    .text.delayus:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\cc3qe2Lk.s:181    .text.delayus:00000000 delayus
+C:\Users\Admin\AppData\Local\Temp\cc3qe2Lk.s:305    .text.delayus:00000094 $d
+C:\Users\Admin\AppData\Local\Temp\cc3qe2Lk.s:311    .text.delays:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\cc3qe2Lk.s:318    .text.delays:00000000 delays
+
+UNDEFINED SYMBOLS
+SystemCoreClock
+__aeabi_uldivmod

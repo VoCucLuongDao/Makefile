@@ -1,0 +1,252 @@
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc8dFnBd.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"main.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.Blink_led,"ax",%progbits
+  18              		.align	1
+  19              		.global	Blink_led
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	Blink_led:
+  27              	.LFB133:
+  28              		.file 1 "User/main.c"
+   1:User/main.c   **** #include "main.h" 
+   2:User/main.c   **** #include "stdio.h"
+   3:User/main.c   **** 
+   4:User/main.c   **** void Blink_led()
+   5:User/main.c   **** {
+  29              		.loc 1 5 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+   6:User/main.c   ****   RCC->AHB1ENR |= 0x01;
+  34              		.loc 1 6 3 view .LVU1
+  35              		.loc 1 6 16 is_stmt 0 view .LVU2
+  36 0000 094A     		ldr	r2, .L2
+  37 0002 136B     		ldr	r3, [r2, #48]
+  38 0004 43F00103 		orr	r3, r3, #1
+  39 0008 1363     		str	r3, [r2, #48]
+   7:User/main.c   ****   
+   8:User/main.c   ****   GPIOA->MODER &= ~(0x3<<12);
+  40              		.loc 1 8 3 is_stmt 1 view .LVU3
+  41              		.loc 1 8 16 is_stmt 0 view .LVU4
+  42 000a 084B     		ldr	r3, .L2+4
+  43 000c 1A68     		ldr	r2, [r3]
+  44 000e 22F44052 		bic	r2, r2, #12288
+  45 0012 1A60     		str	r2, [r3]
+   9:User/main.c   ****   GPIOA->MODER |= 0x01<<12;
+  46              		.loc 1 9 3 is_stmt 1 view .LVU5
+  47              		.loc 1 9 16 is_stmt 0 view .LVU6
+  48 0014 1A68     		ldr	r2, [r3]
+  49 0016 42F48052 		orr	r2, r2, #4096
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc8dFnBd.s 			page 2
+
+
+  50 001a 1A60     		str	r2, [r3]
+  10:User/main.c   ****   GPIOA->OTYPER &= ~(0x01<<6);
+  51              		.loc 1 10 3 is_stmt 1 view .LVU7
+  52              		.loc 1 10 17 is_stmt 0 view .LVU8
+  53 001c 5A68     		ldr	r2, [r3, #4]
+  54 001e 22F04002 		bic	r2, r2, #64
+  55 0022 5A60     		str	r2, [r3, #4]
+  11:User/main.c   **** }
+  56              		.loc 1 11 1 view .LVU9
+  57 0024 7047     		bx	lr
+  58              	.L3:
+  59 0026 00BF     		.align	2
+  60              	.L2:
+  61 0028 00380240 		.word	1073887232
+  62 002c 00000240 		.word	1073872896
+  63              		.cfi_endproc
+  64              	.LFE133:
+  66              		.section	.text.main,"ax",%progbits
+  67              		.align	1
+  68              		.global	main
+  69              		.syntax unified
+  70              		.thumb
+  71              		.thumb_func
+  72              		.fpu fpv4-sp-d16
+  74              	main:
+  75              	.LFB134:
+  12:User/main.c   **** void main()
+  13:User/main.c   **** {
+  76              		.loc 1 13 1 is_stmt 1 view -0
+  77              		.cfi_startproc
+  78              		@ Volatile: function does not return.
+  79              		@ args = 0, pretend = 0, frame = 0
+  80              		@ frame_needed = 0, uses_anonymous_args = 0
+  81 0000 08B5     		push	{r3, lr}
+  82              	.LCFI0:
+  83              		.cfi_def_cfa_offset 8
+  84              		.cfi_offset 3, -8
+  85              		.cfi_offset 14, -4
+  14:User/main.c   ****   Blink_led();     
+  86              		.loc 1 14 3 view .LVU11
+  87 0002 FFF7FEFF 		bl	Blink_led
+  88              	.LVL0:
+  89              	.L5:
+  15:User/main.c   ****   while(1){
+  90              		.loc 1 15 3 discriminator 1 view .LVU12
+  16:User/main.c   ****      GPIOA->ODR |=  0x01<<6;
+  91              		.loc 1 16 6 discriminator 1 view .LVU13
+  92              		.loc 1 16 17 is_stmt 0 discriminator 1 view .LVU14
+  93 0006 0A4C     		ldr	r4, .L7
+  94 0008 6369     		ldr	r3, [r4, #20]
+  95 000a 43F04003 		orr	r3, r3, #64
+  96 000e 6361     		str	r3, [r4, #20]
+  17:User/main.c   ****      delayms(1000);
+  97              		.loc 1 17 6 is_stmt 1 discriminator 1 view .LVU15
+  98 0010 4FF47A70 		mov	r0, #1000
+  99 0014 0021     		movs	r1, #0
+ 100 0016 FFF7FEFF 		bl	delayms
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc8dFnBd.s 			page 3
+
+
+ 101              	.LVL1:
+  18:User/main.c   ****      GPIOA->ODR &= ~(0x01<<6);
+ 102              		.loc 1 18 6 discriminator 1 view .LVU16
+ 103              		.loc 1 18 17 is_stmt 0 discriminator 1 view .LVU17
+ 104 001a 6369     		ldr	r3, [r4, #20]
+ 105 001c 23F04003 		bic	r3, r3, #64
+ 106 0020 6361     		str	r3, [r4, #20]
+  19:User/main.c   ****      delayms(1000);
+ 107              		.loc 1 19 6 is_stmt 1 discriminator 1 view .LVU18
+ 108 0022 4FF47A70 		mov	r0, #1000
+ 109 0026 0021     		movs	r1, #0
+ 110 0028 FFF7FEFF 		bl	delayms
+ 111              	.LVL2:
+  15:User/main.c   ****      GPIOA->ODR |=  0x01<<6;
+ 112              		.loc 1 15 8 discriminator 1 view .LVU19
+ 113 002c EBE7     		b	.L5
+ 114              	.L8:
+ 115 002e 00BF     		.align	2
+ 116              	.L7:
+ 117 0030 00000240 		.word	1073872896
+ 118              		.cfi_endproc
+ 119              	.LFE134:
+ 121              		.section	.text.TIM8_CC_IRQHandler,"ax",%progbits
+ 122              		.align	1
+ 123              		.global	TIM8_CC_IRQHandler
+ 124              		.syntax unified
+ 125              		.thumb
+ 126              		.thumb_func
+ 127              		.fpu fpv4-sp-d16
+ 129              	TIM8_CC_IRQHandler:
+ 130              	.LFB135:
+  20:User/main.c   ****      
+  21:User/main.c   ****   }
+  22:User/main.c   **** }
+  23:User/main.c   **** 
+  24:User/main.c   **** int x_value_test = 0;
+  25:User/main.c   **** void TIM8_CC_IRQHandler()
+  26:User/main.c   **** {
+ 131              		.loc 1 26 1 view -0
+ 132              		.cfi_startproc
+ 133              		@ args = 0, pretend = 0, frame = 0
+ 134              		@ frame_needed = 0, uses_anonymous_args = 0
+ 135              		@ link register save eliminated.
+  27:User/main.c   ****   if(TIM8->SR & 0x01)
+ 136              		.loc 1 27 3 view .LVU21
+ 137              		.loc 1 27 10 is_stmt 0 view .LVU22
+ 138 0000 0B4B     		ldr	r3, .L12
+ 139 0002 1B8A     		ldrh	r3, [r3, #16]
+ 140              		.loc 1 27 5 view .LVU23
+ 141 0004 13F0010F 		tst	r3, #1
+ 142 0008 11D0     		beq	.L9
+  28:User/main.c   ****     {
+  29:User/main.c   ****       x_value_test++;
+ 143              		.loc 1 29 7 is_stmt 1 view .LVU24
+ 144              		.loc 1 29 19 is_stmt 0 view .LVU25
+ 145 000a 0A4A     		ldr	r2, .L12+4
+ 146 000c 1368     		ldr	r3, [r2]
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc8dFnBd.s 			page 4
+
+
+ 147 000e 0133     		adds	r3, r3, #1
+ 148 0010 1360     		str	r3, [r2]
+  30:User/main.c   ****       if(x_value_test > 10)
+ 149              		.loc 1 30 7 is_stmt 1 view .LVU26
+ 150              		.loc 1 30 9 is_stmt 0 view .LVU27
+ 151 0012 0A2B     		cmp	r3, #10
+ 152 0014 04DD     		ble	.L11
+  31:User/main.c   ****         GPIOA->ODR |=  0x01<<6;
+ 153              		.loc 1 31 9 is_stmt 1 view .LVU28
+ 154              		.loc 1 31 20 is_stmt 0 view .LVU29
+ 155 0016 084A     		ldr	r2, .L12+8
+ 156 0018 5369     		ldr	r3, [r2, #20]
+ 157 001a 43F04003 		orr	r3, r3, #64
+ 158 001e 5361     		str	r3, [r2, #20]
+ 159              	.L11:
+  32:User/main.c   ****       
+  33:User/main.c   ****       TIM8->SR &= ~0x01;
+ 160              		.loc 1 33 7 is_stmt 1 view .LVU30
+ 161              		.loc 1 33 16 is_stmt 0 view .LVU31
+ 162 0020 034A     		ldr	r2, .L12
+ 163 0022 138A     		ldrh	r3, [r2, #16]
+ 164 0024 9BB2     		uxth	r3, r3
+ 165 0026 23F00103 		bic	r3, r3, #1
+ 166 002a 9BB2     		uxth	r3, r3
+ 167 002c 1382     		strh	r3, [r2, #16]	@ movhi
+ 168              	.L9:
+  34:User/main.c   ****     }
+  35:User/main.c   **** }...
+ 169              		.loc 1 35 1 view .LVU32
+ 170 002e 7047     		bx	lr
+ 171              	.L13:
+ 172              		.align	2
+ 173              	.L12:
+ 174 0030 00040140 		.word	1073808384
+ 175 0034 00000000 		.word	.LANCHOR0
+ 176 0038 00000240 		.word	1073872896
+ 177              		.cfi_endproc
+ 178              	.LFE135:
+ 180              		.global	x_value_test
+ 181              		.section	.bss.x_value_test,"aw",%nobits
+ 182              		.align	2
+ 183              		.set	.LANCHOR0,. + 0
+ 186              	x_value_test:
+ 187 0000 00000000 		.space	4
+ 188              		.text
+ 189              	.Letext0:
+ 190              		.file 2 "c:\\program files (x86)\\gnu arm embedded toolchain\\10 2020-q4-major\\arm-none-eabi\\inc
+ 191              		.file 3 "c:\\program files (x86)\\gnu arm embedded toolchain\\10 2020-q4-major\\arm-none-eabi\\inc
+ 192              		.file 4 "Libraries/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
+ 193              		.file 5 "Libraries/delay.h"
+ARM GAS  C:\Users\Admin\AppData\Local\Temp\cc8dFnBd.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\Admin\AppData\Local\Temp\cc8dFnBd.s:18     .text.Blink_led:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\cc8dFnBd.s:26     .text.Blink_led:00000000 Blink_led
+C:\Users\Admin\AppData\Local\Temp\cc8dFnBd.s:61     .text.Blink_led:00000028 $d
+C:\Users\Admin\AppData\Local\Temp\cc8dFnBd.s:67     .text.main:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\cc8dFnBd.s:74     .text.main:00000000 main
+C:\Users\Admin\AppData\Local\Temp\cc8dFnBd.s:117    .text.main:00000030 $d
+C:\Users\Admin\AppData\Local\Temp\cc8dFnBd.s:122    .text.TIM8_CC_IRQHandler:00000000 $t
+C:\Users\Admin\AppData\Local\Temp\cc8dFnBd.s:129    .text.TIM8_CC_IRQHandler:00000000 TIM8_CC_IRQHandler
+C:\Users\Admin\AppData\Local\Temp\cc8dFnBd.s:174    .text.TIM8_CC_IRQHandler:00000030 $d
+C:\Users\Admin\AppData\Local\Temp\cc8dFnBd.s:186    .bss.x_value_test:00000000 x_value_test
+C:\Users\Admin\AppData\Local\Temp\cc8dFnBd.s:182    .bss.x_value_test:00000000 $d
+
+UNDEFINED SYMBOLS
+delayms
